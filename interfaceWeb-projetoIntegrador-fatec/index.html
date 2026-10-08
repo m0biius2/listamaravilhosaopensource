@@ -61,6 +61,8 @@
   <script src="projetos.js"></script>
   <script>
     let todosProjetos = [];
+    
+    let quantidadeVisivel = 9;
 
     // Evita que textos vindos da lista quebrem o HTML
     function escapar(texto) {
@@ -80,8 +82,10 @@
 
       document.getElementById('contador').textContent =
         filtrados.length + ' projeto(s) encontrado(s)';
+        const projetosVisiveis = filtrados.slice(0, quantidadeVisivel);
+      
 
-      document.getElementById('lista').innerHTML = filtrados.map(p => `
+      document.getElementById('lista').innerHTML = projetosVisiveis.map(p => `
         <div class="card">
           <span class="nivel">${escapar(p.nivel)}</span>
           <h3><a href="${escapar(p.link)}" target="_blank">${escapar(p.nome)}</a></h3>
@@ -93,6 +97,14 @@
           </small>
         </div>
       `).join('');
+      if (quantidadeVisivel < filtrados.length) {
+        document.getElementById('lista').innerHTML += `
+        <button id="mostrarMais">Mostrar mais</button>`;
+        document.getElementById('mostrarMais').addEventListener('click', () => {
+          quantidadeVisivel += 9;
+          mostrarProjetos();
+          });
+      }
     }
 
     carregarProjetos()
@@ -104,8 +116,14 @@
         document.getElementById('lista').textContent = 'Não foi possível carregar a lista. ' + erro.message;
       });
 
-    document.getElementById('busca').addEventListener('input', mostrarProjetos);
-    document.getElementById('nivel').addEventListener('change', mostrarProjetos);
+    document.getElementById('busca').addEventListener('input', () => {
+      quantidadeVisivel = 9;
+      mostrarProjetos(); 
+    });
+    document.getElementById('nivel').addEventListener('change', () => {
+      quantidadeVisivel = 9;
+      mostrarProjetos(); 
+    });
   </script>
 </body>
 </html>
