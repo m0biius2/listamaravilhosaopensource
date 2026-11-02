@@ -75,6 +75,17 @@
       <option value="Intermediário">Intermediário</option>
       <option value="Avançado">Avançado</option>
     </select>
+   
+    <select id="ordenacao">
+        <option value="">Ordenar por...</option>
+        <option value="nome">Nome (A-Z)</option>
+        <option value="linguagem">Linguagem (A-Z)</option>
+    </select>
+
+    <select id="direcao">
+    <option value="asc">Crescente (A-Z)</option>
+    <option value="desc">Decrescente (Z-A)</option>
+</select>
   </div>
 
   <p id="contador"></p>
@@ -101,6 +112,27 @@
         p.nome.toLowerCase().includes(busca) &&
         (nivel === '' || p.nivel === nivel)
       );
+      
+      // Ordenação dos projetos
+      const ordenacao = document.getElementById('ordenacao').value;
+      const direcao = document.getElementById('direcao').value;
+
+      filtrados.sort((a, b) => {
+          let resultado = 0;
+
+          if (ordenacao === 'nome') {
+              resultado = a.nome.localeCompare(b.nome);
+          }
+
+          if (ordenacao === 'linguagem') {
+              const linguagemA = a.linguagens[0] || '';
+              const linguagemB = b.linguagens[0] || '';
+
+              resultado = linguagemA.localeCompare(linguagemB);
+          }
+
+          return direcao === 'desc' ? -resultado : resultado;
+      });
 
       document.getElementById('contador').textContent =
         filtrados.length + ' projeto(s) encontrado(s)';
@@ -122,7 +154,7 @@
       if (quantidadeVisivel < filtrados.length) {
         document.getElementById('lista').innerHTML += `
         <button id="mostrarMais">Mostrar mais</button>`;
-        
+
         document.getElementById('mostrarMais').style.gridColumn = "1 / -1";
 
         document.getElementById('mostrarMais').addEventListener('click', () => {
@@ -130,7 +162,7 @@
           mostrarProjetos();
           });
       }
-    }
+  }
 
     carregarProjetos()
       .then(projetos => {
@@ -148,6 +180,14 @@
     document.getElementById('nivel').addEventListener('change', () => {
       quantidadeVisivel = 9;
       mostrarProjetos(); 
+    });
+    document.getElementById('ordenacao').addEventListener('change', () => {
+    quantidadeVisivel = 9;
+    mostrarProjetos();
+    });
+    document.getElementById('direcao').addEventListener('change', () => {
+    quantidadeVisivel = 9;
+    mostrarProjetos();
     });
   </script>
 </body>
