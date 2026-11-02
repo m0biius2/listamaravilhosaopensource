@@ -40,6 +40,28 @@
       padding: 3px 8px;
       border-radius: 10px;
     }
+    /* CSS DO BOTÃO MOSTRAR MAIS */
+    #mostrarMais {
+      display: block;
+      margin: 25px auto;
+      padding: 12px 30px;
+      background-color: #ffffff;
+      color: #0366d6;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.20);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #mostrarMais:hover {
+      background-color: #0366d6;
+      color: #ffffff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
@@ -100,6 +122,9 @@
       if (quantidadeVisivel < filtrados.length) {
         document.getElementById('lista').innerHTML += `
         <button id="mostrarMais">Mostrar mais</button>`;
+        
+        document.getElementById('mostrarMais').style.gridColumn = "1 / -1";
+
         document.getElementById('mostrarMais').addEventListener('click', () => {
           quantidadeVisivel += 9;
           mostrarProjetos();
